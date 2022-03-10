@@ -53,4 +53,13 @@ describe('backend-bookstore routes', () => {
     expect(res.body).toEqual(expect.arrayContaining(expected));
     expect(res.body.length).toBe(2);
   });
+
+  // it('gets a publisher by id', async () => {
+  //   const publisher = {
+  //     name: 'Penguin',
+  //     city: 'New York',
+  //     state: 'New York',
+  //     country: 'United States',
+  //   };
+  // });
 });
