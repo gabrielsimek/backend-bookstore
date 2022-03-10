@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS publisher CASCADE;
 DROP TABLE IF EXISTS author CASCADE;
 DROP TABLE IF EXISTS reviewer CASCADE;
 DROP TABLE IF EXISTS book CASCADE;
+DROP TABLE IF EXISTS author_book CASCADE;
 
 CREATE TABLE publisher (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -17,9 +18,11 @@ CREATE TABLE book (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     released INT NOT NULL,
-    publisher BIGINT NOT NULL,
-    FOREIGN KEY (publisher) REFERENCES publisher(id)
+    publisher_id BIGINT NOT NULL,
+    FOREIGN KEY (publisher_id) REFERENCES publisher(id)
 );
+
+
 
 CREATE TABLE author (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -27,6 +30,11 @@ CREATE TABLE author (
     dob DATE,
     pob VARCHAR(255)
     
+);
+
+CREATE TABLE author_book (
+    book_id BIGINT REFERENCES book(id),
+    author_id BIGINT REFERENCES author(id)
 );
 
 CREATE TABLE reviewer(
