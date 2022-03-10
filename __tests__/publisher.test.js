@@ -27,4 +27,30 @@ describe('backend-bookstore routes', () => {
       id: expect.any(String),
     });
   });
+
+  it('gets all publishers', async () => {
+    const publishers = [
+      {
+        name: 'Penguin',
+        city: 'New York',
+        state: 'New York',
+        country: 'United States',
+      },
+      {
+        name: 'Random House',
+        city: 'New York',
+        state: 'New York',
+        country: 'United States',
+      },
+    ];
+
+    const expected = await Promise.all(
+      publishers.map((publisher) => Publisher.insert(publisher))
+    );
+
+    const res = await request(app).get('/publishers');
+
+    expect(res.body).toEqual(expect.arrayContaining(expected));
+    expect(res.body.length).toBe(2);
+  });
 });
