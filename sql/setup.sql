@@ -2,7 +2,7 @@
 -- The SQL in this file will be executed when you run `npm run setup-db`
 DROP TABLE IF EXISTS publisher CASCADE;
 DROP TABLE IF EXISTS author CASCADE;
-
+DROP TABLE IF EXISTS reviewer CASCADE;
 CREATE TABLE publisher (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -19,3 +19,9 @@ CREATE TABLE author (
     
 );
 
+CREATE TABLE reviewer(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255),
+    company VARCHAR(255)
+
+);
