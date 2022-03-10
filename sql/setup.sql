@@ -3,6 +3,7 @@
 DROP TABLE IF EXISTS publisher CASCADE;
 DROP TABLE IF EXISTS author CASCADE;
 DROP TABLE IF EXISTS reviewer CASCADE;
+DROP TABLE IF EXISTS review CASCADE;
 DROP TABLE IF EXISTS book CASCADE;
 DROP TABLE IF EXISTS author_book CASCADE;
 
@@ -14,6 +15,14 @@ CREATE TABLE publisher (
     country VARCHAR(255)
 );
 
+INSERT INTO publisher (name, city, state, country)
+    VALUES (
+        'Elijah Prosperie',
+        'Seattle',
+        'Washington',
+        'United States'
+    );
+
 CREATE TABLE book (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -22,7 +31,9 @@ CREATE TABLE book (
     FOREIGN KEY (publisher_id) REFERENCES publisher(id)
 );
 
-
+INSERT INTO book (title, publisher_id, released)
+VALUES
+    ('Coffee Memoirs', (SELECT id FROM publishers WHERE name = 'Elijah Prosperie'), 2021);
 
 CREATE TABLE author (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -43,3 +54,18 @@ CREATE TABLE reviewer(
     company VARCHAR(255)
 
 );
+
+INSERT INTO reviewer (name, company) VALUES('Dano', 'Destruction');
+
+
+CREATE TABLE review (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  rating INT CHECK (rating > 0 AND rating < 6),
+  reviewer INT REFERENCES reviewer (id),
+  review varchar(140) NOT NULL,
+  book INT REFERENCES book (id)
+);
+
+INSERT INTO review (rating, reviewer, review, book) 
+VALUES
+  (4, 1, 'sample review', 1);
