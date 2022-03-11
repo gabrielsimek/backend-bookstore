@@ -7,7 +7,6 @@ const Author = require('../lib/models/Author');
 const Publisher = require('../lib/models/Publisher');
 const Book = require('../lib/models/Book');
 const Review = require('../lib/models/Review');
-const res = require('express/lib/response');
 
 describe('backend-bookstore routes', () => {
   beforeEach(() => {
