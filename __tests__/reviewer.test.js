@@ -53,7 +53,7 @@ describe('backend-bookstore routes', () => {
     expect(res.body).toEqual(expect.arrayContaining(expected));
   });
 
-  it.only('gets a reviewer by id', async () => {
+  it('gets a reviewer by id', async () => {
     const author = await Author.insert({
       name: 'Murakami',
       dob: '4/27/2019',
@@ -106,7 +106,7 @@ describe('backend-bookstore routes', () => {
       book: book2.id,
     });
 
-    const res = await request(app).get(reviewer.id);
+    const res = await request(app).get(`/reviewers/${review1.id}`);
 
     expect(res.body).toEqual({
       id: expect.any(String),
@@ -117,13 +117,13 @@ describe('backend-bookstore routes', () => {
           id: review1.id,
           rating: review1.rating,
           review: review1.review,
-          book: { id: book1.id, title: book1.title },
+          book: { id: Number(book1.id), title: book1.title },
         },
         {
           id: review2.id,
           rating: review2.rating,
           review: review2.review,
-          book: { id: book2.id, title: book2.title },
+          book: { id: Number(book2.id), title: book2.title },
         },
       ],
     });
