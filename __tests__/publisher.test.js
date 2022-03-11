@@ -57,7 +57,7 @@ describe('backend-bookstore routes', () => {
   });
 
   
-  it.only('gets a publisher by id', async () => {
+  it('gets a publisher by id', async () => {
   // { id, name, city, state, country, books: [{ id, title }] }
     const author = await Author.insert({
       name: 'Murakami',

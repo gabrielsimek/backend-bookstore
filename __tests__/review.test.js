@@ -16,7 +16,7 @@ describe('backend-bookstore routes', () => {
     pool.end();
   });
 
-  it.only('adds a review', async () => {
+  it('adds a review', async () => {
     const publisher = await Publisher.insert({
       name: 'Penguin',
       city: 'New York',
