@@ -132,12 +132,11 @@ describe('backend-bookstore routes', () => {
     };
 
     const bookRes = await Book.insert(book);
-    console.log(bookRes);
 
     await Promise.all(book.authorIds.map((id) => bookRes.addAuthorById(id)));
 
-    // const res = await request(app).get(`/books/${bookRes.id}`);
-    // console.log(res);
+    const res = await request(app).get(`/books/${bookRes.id}`);
+    // console.log('res.body', res.body);
     // expect(res.body).toEqual({
     //   id: String(book.id),
     //   title: 'sample book',

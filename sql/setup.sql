@@ -33,7 +33,7 @@ CREATE TABLE book (
 
 INSERT INTO book (title, publisher_id, released)
 VALUES
-    ('Coffee Memoirs', (SELECT id FROM publishers WHERE name = 'Elijah Prosperie'), 2021);
+    ('Coffee Memoirs', (SELECT id FROM publisher WHERE name = 'Elijah Prosperie'), 2021);
 
 CREATE TABLE author (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
