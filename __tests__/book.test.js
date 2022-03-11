@@ -122,6 +122,7 @@ describe('backend-bookstore routes', () => {
       dob: '4/27/1935',
       pob: 'Los Angeles',
     });
+    
     const authorIds = [author1.id, author2.id];
     const book = await Book.insert({
       title: 'Wind-up Bird Chronicle',
