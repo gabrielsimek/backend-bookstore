@@ -15,13 +15,13 @@ CREATE TABLE publisher (
     country VARCHAR(255)
 );
 
-INSERT INTO publisher (name, city, state, country)
-    VALUES (
-        'Elijah Prosperie',
-        'Seattle',
-        'Washington',
-        'United States'
-    );
+-- INSERT INTO publisher (name, city, state, country)
+--     VALUES (
+--         'Elijah Prosperie',
+--         'Seattle',
+--         'Washington',
+--         'United States'
+--     );
 
 CREATE TABLE book (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -31,9 +31,9 @@ CREATE TABLE book (
     FOREIGN KEY (publisher_id) REFERENCES publisher(id)
 );
 
-INSERT INTO book (title, publisher_id, released)
-VALUES
-    ('Coffee Memoirs', (SELECT id FROM publisher WHERE name = 'Elijah Prosperie'), 2021);
+-- INSERT INTO book (title, publisher_id, released)
+-- VALUES
+--     ('Coffee Memoirs', (SELECT id FROM publisher WHERE name = 'Elijah Prosperie'), 2021);
 
 CREATE TABLE author (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -55,17 +55,17 @@ CREATE TABLE reviewer(
 
 );
 
-INSERT INTO reviewer (name, company) VALUES('Dano', 'Destruction');
+-- INSERT INTO reviewer (name, company) VALUES('Dano', 'Destruction');
 
 
 CREATE TABLE review (
   id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   rating INT CHECK (rating > 0 AND rating < 6),
-  reviewer INT REFERENCES reviewer (id),
+  reviewer BIGINT REFERENCES reviewer (id),
   review varchar(140) NOT NULL,
-  book INT REFERENCES book (id)
+  book BIGINT REFERENCES book (id)
 );
 
-INSERT INTO review (rating, reviewer, review, book) 
-VALUES
-  (4, 1, 'sample review', 1);
+-- INSERT INTO review (rating, reviewer, review, book) 
+-- VALUES
+--   (4, 1, 'sample review', 1);
