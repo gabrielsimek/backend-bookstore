@@ -41,16 +41,14 @@ describe('backend-bookstore routes', () => {
       name: 'Roger Ebert',
       company: 'Siskel and Ebert',
     });
-    // console.log({ publisher, author, newBook, reviewer });
     const review = {
       rating: 5,
-      reviewer: Number(reviewer.id),
+      reviewer: reviewer.id,
       review: 'Good Book',
-      book: Number(newBook.id),
+      book: newBook.id,
     };
 
     const res = await request(app).post('/reviews').send(review);
-    console.log('res.body', res.body);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       ...review,

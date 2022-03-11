@@ -37,8 +37,6 @@ describe('backend-bookstore routes', () => {
       pob: 'Los Angeles',
     });
 
-    // console.log('author1', author1);
-    // console.log('author2', author2);
     const book = {
       title: 'Wind-up Bird Chronicle',
       publisherId: publisher.id,
@@ -47,11 +45,12 @@ describe('backend-bookstore routes', () => {
     };
 
     const res = await request(app).post('/books').send(book);
-
+    // console.dir(res.body, { depth: null });
     expect(res.body).toEqual({
       id: expect.any(String),
       title: 'Wind-up Bird Chronicle',
-      // publisher: []
+      publisher: {},
+      // reviews: [],
       publisherId: publisher.id,
       released: 1970,
       authors: [
@@ -81,8 +80,6 @@ describe('backend-bookstore routes', () => {
       pob: 'Los Angeles',
     });
 
-    // console.log('author1', author1);
-    // console.log('author2', author2);
     const book = {
       title: 'Wind-up Bird Chronicle',
       publisherId: publisher.id,
@@ -106,7 +103,7 @@ describe('backend-bookstore routes', () => {
     );
   });
 
-  it.only('should be able to list a book by id', async () => {
+  it('should be able to list a book by id', async () => {
     const publisher = await Publisher.insert({
       name: 'Penguin',
       city: 'New York',
@@ -159,7 +156,10 @@ describe('backend-bookstore routes', () => {
     });
 
     const { body } = await request(app).get(`/books/${book.id}`);
-    console.log(JSON.stringify(body, null, 4));
+    // console.log(body);
+    // console.log(JSON.stringify(body, null, 4));
+    // console.dir(body, { depth: null });
+
     expect(body).toEqual({
       id: expect.any(String),
       title: 'Wind-up Bird Chronicle',
@@ -170,23 +170,19 @@ describe('backend-bookstore routes', () => {
           id: expect.any(String),
           rating: review1.rating,
           review: review1.review,
-          reviewer: [
-            {
-              id: expect.any(Number),
-              name: reviewer1.name,
-            },
-          ],
+          reviewer: {
+            id: expect.any(Number),
+            name: reviewer1.name,
+          },
         },
         {
           id: expect.any(String),
           rating: review2.rating,
           review: review2.review,
-          reviewer: [
-            {
-              id: expect.any(Number),
-              name: reviewer2.name,
-            },
-          ],
+          reviewer: {
+            id: expect.any(Number),
+            name: reviewer2.name,
+          },
         },
       ]),
       authors: expect.arrayContaining([
