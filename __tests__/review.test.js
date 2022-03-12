@@ -7,7 +7,8 @@ const Book = require('../lib/models/Book');
 const Author = require('../lib/models/Author');
 const Publisher = require('../lib/models/Publisher');
 const Review = require('../lib/models/Review');
-
+const fs = require('fs/promises');
+const exp = require('constants');
 describe('backend-bookstore routes', () => {
   beforeEach(() => {
     return setup(pool);
@@ -79,7 +80,7 @@ describe('backend-bookstore routes', () => {
     const authorsRes = await Promise.all(
       authors.map((author) => Author.insert(author))
     );
- 
+
     const books = [...Array(10)].map((_, i) => ({
       title: `title ${i + 1}`,
       publisherId: publisherRes[Math.floor(Math.random() * 5)].id,
@@ -101,7 +102,7 @@ describe('backend-bookstore routes', () => {
     );
 
     let reviewerCount = 0;
-    
+
     const reviews = [...Array(150)].map((_, i) => {
       reviewerCount++;
       if (reviewerCount > 14) reviewerCount = 0;
@@ -118,11 +119,29 @@ describe('backend-bookstore routes', () => {
       reviews.map((review) => Review.insert(review))
     );
 
-    //   [{
-    //     id,
-    //     rating,
-    //     review,
-    //     book: { id, title }
-    // }]
+    const sortedReviews = [...reviewsRes]
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 100)
+      .map((review) => {
+        review.reviewer.delete;
+        const matchingBook = booksRes.find(({ id }) => id === review.book);
+        return {
+          ...review,
+          book: {
+            id: matchingBook.id,
+            title: matchingBook.title,
+          },
+        };
+      });
+
+    const res = await request(app).get('/reviews');
+
+    // await fs.writeFile('./res.json', JSON.stringify(res.body, null, 4));
+    // await fs.writeFile('./sorted.json', JSON.stringify(sortedReviews, null, 4));
+
+    expect(res.body).toHaveLength(100);
+    expect(res.body[res.body.length - 1].rating).toEqual(
+      sortedReviews[sortedReviews.length - 1].rating
+    );
   });
 });
