@@ -88,7 +88,7 @@ describe('backend-bookstore routes', () => {
 
     await Reviewer.insert({
       name: 'Marty',
-      company: 'Alchemy'
+      company: 'Alchemy',
     });
 
     const review1 = await Review.insert({
@@ -125,6 +125,38 @@ describe('backend-bookstore routes', () => {
           book: { id: Number(book2.id), title: book2.title },
         },
       ],
+    });
+  });
+
+  it.only('updates a reviewer', async () => {
+    const reviewer1 = await Reviewer.insert({
+      name: 'Roger Ebert',
+      company: 'Siskell and Ebert',
+    });
+
+    const reviewer2 = await Reviewer.insert({
+      name: 'Gabriel S',
+      company: 'Alchemy',
+    });
+
+    const res1 = await request(app)
+      .put(`/reviewers/${reviewer1.id}`)
+      .send({ name: 'Roger' });
+
+    const res2 = await request(app)
+      .put(`/reviewers/${reviewer2.id}`)
+      .send({ name: 'Casey', company: 'ACL' });
+
+    expect(res1.body).toEqual({
+      id: reviewer1.id,
+      name: 'Roger',
+      company: reviewer1.company,
+    });
+
+    expect(res2.body).toEqual({
+      id: reviewer2.id,
+      name: 'Casey',
+      company: 'ACL',
     });
   });
 });
