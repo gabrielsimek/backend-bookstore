@@ -157,7 +157,7 @@ describe('backend-bookstore routes', () => {
     });
 
     const { body } = await request(app).get(`/books/${book.id}`);
-    // console.log(body);
+
     // console.log(JSON.stringify(body, null, 4));
     // console.dir(body, { depth: null });
 
