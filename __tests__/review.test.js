@@ -57,7 +57,7 @@ describe('backend-bookstore routes', () => {
     });
   });
 
-  it.only('gets all 100 highest reviews', async () => {
+  it('gets all 100 highest reviews', async () => {
     const publishers = [...Array(5)].map((_, i) => ({
       name: `publisher ${i + 1}`,
       city: `city ${i + 1}`,

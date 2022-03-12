@@ -128,7 +128,7 @@ describe('backend-bookstore routes', () => {
     });
   });
 
-  it.only('updates a reviewer', async () => {
+  it('updates a reviewer', async () => {
     const reviewer1 = await Reviewer.insert({
       name: 'Roger Ebert',
       company: 'Siskell and Ebert',
@@ -158,5 +158,80 @@ describe('backend-bookstore routes', () => {
       name: 'Casey',
       company: 'ACL',
     });
+  });
+
+  it('removes a reviewer', async () => {
+    const author = await Author.insert({
+      name: 'Murakami',
+      dob: '4/27/2019',
+      pob: 'Tokyo',
+    });
+
+    const publisher = await Publisher.insert({
+      name: 'Penguin',
+      city: 'New York',
+      state: 'New York',
+      country: 'United States',
+    });
+
+    const book1 = await Book.insert({
+      title: 'Wind-up Bird Chronicle',
+      publisherId: publisher.id,
+      released: 1970,
+    });
+
+    const book2 = await Book.insert({
+      title: 'Infinite Jest',
+      publisherId: publisher.id,
+      released: 1970,
+    });
+
+    await book1.addAuthorById(author.id);
+    await book2.addAuthorById(author.id);
+
+    const reviewer1 = await Reviewer.insert({
+      name: 'Roger Ebert',
+      company: 'Siskell and Ebert',
+    });
+
+    const reviewer2 = await Reviewer.insert({
+      name: 'Marty',
+      company: 'Alchemy',
+    });
+
+    await Review.insert({
+      rating: 5,
+      reviewer: reviewer1.id,
+      review: 'Good Book',
+      book: book1.id,
+    });
+
+    await Review.insert({
+      rating: 2,
+      reviewer: reviewer1.id,
+      review: 'Bad Book',
+      book: book2.id,
+    });
+
+    const reviewer1Res = await request(app).delete(
+      `/reviewers/${reviewer1.id}`
+    );
+
+    const reviewer2Res = await request(app).delete(
+      `/reviewers/${reviewer2.id}`
+    );
+
+    const allReviewers = await Reviewer.getAll();
+
+    //Reviewer with reviews
+    expect(reviewer1Res.status).toBe(400);
+    expect(reviewer1Res.body).toEqual({
+      message: 'Reviewer cannot be deleted with reviews',
+      status: 400,
+    });
+    expect(allReviewers).toEqual(expect.arrayContaining([reviewer1]));
+    //Reviewer with no reviews
+    expect(reviewer2Res.body).toEqual(reviewer2);
+    expect(allReviewers).toEqual(expect.not.arrayContaining([reviewer2]));
   });
 });
