@@ -7,8 +7,7 @@ const Book = require('../lib/models/Book');
 const Author = require('../lib/models/Author');
 const Publisher = require('../lib/models/Publisher');
 const Review = require('../lib/models/Review');
-const fs = require('fs/promises');
-const exp = require('constants');
+// const fs = require('fs/promises');
 describe('backend-bookstore routes', () => {
   beforeEach(() => {
     return setup(pool);
