@@ -57,7 +57,7 @@ describe('backend-bookstore routes', () => {
     });
   });
 
-  it('gets all 100 highest reviews', async () => {
+  it.only('gets all 100 highest reviews', async () => {
     const publishers = [...Array(5)].map((_, i) => ({
       name: `publisher ${i + 1}`,
       city: `city ${i + 1}`,
@@ -83,17 +83,17 @@ describe('backend-bookstore routes', () => {
     const books = [...Array(10)].map((_, i) => ({
       title: `title ${i + 1}`,
       publisherId: publisherRes[Math.floor(Math.random() * 5)].id,
-      released: `199${i + 1}`,
-      authorIds: [authorsRes[Math.floor(Math.random() * 5)]].id,
+      released: `199${i}`,
     }));
     const booksRes = await Promise.all(books.map((book) => Book.insert(book)));
-
     await Promise.all(
-      booksRes.map((book) => book.addAuthorById(Math.floor(Math.random() * 5)))
+      booksRes.map((book) =>
+        book.addAuthorById(authorsRes[Math.floor(Math.random() * 5)].id)
+      )
     );
     const reviewers = [...Array(20)].map((_, i) => ({
       name: `reviewer ${i + 1}`,
-      company: `compnay ${i + 1}`,
+      company: `company ${i + 1}`,
     }));
 
     const reviewersRes = await Promise.all(
@@ -110,7 +110,7 @@ describe('backend-bookstore routes', () => {
         rating: stars,
         reviewer: reviewersRes[reviewerCount].id,
         review: `Review # ${i + 1}, book was ${stars > 3 ? 'good' : 'bad'}`,
-        book: authorsRes[Math.floor(Math.random() * 5)].id,
+        book: booksRes[Math.floor(Math.random() * 10)].id,
       };
     });
 
@@ -143,5 +143,4 @@ describe('backend-bookstore routes', () => {
       sortedReviews[sortedReviews.length - 1].rating
     );
   });
-  
 });
